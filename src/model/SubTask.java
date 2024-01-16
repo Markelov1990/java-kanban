@@ -14,17 +14,15 @@ public class SubTask extends Task {
         this.idOfEpic = idOfEpic;
     }
 
-    public int getIdOfSubtusk() {
+    public int getIdOfEpic() {
         return idOfEpic;
     }
 
-    public void setIdOfSubtusk(int idOfEpic) {
-        this.idOfEpic = idOfEpic;
-    }
+
 
     @Override
     public String toString() {
-        String result = "Задача: " + name + ", Подробности: " + detail + ", Номер основной задачи: " + idOfEpic +" Номер подзадачи: " +  id +  ", Статус " + status  +" .\n";
+        String result = "Подзадача: " + name + ", Подробности: " + detail + ", Номер основной задачи: " + idOfEpic +" Номер подзадачи: " +  id +  ", Статус " + status  +" .\n";
 
         return result;
     }

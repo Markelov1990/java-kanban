@@ -92,6 +92,41 @@ public class Manager {
         return transitEpic;
     }
 
+    public SubTask getEpicSubtasks (int idOfEpic) {
+        SubTask transitSubtask = null;
+        for (int a: subtasks.keySet()) {
+            if (idOfEpic == subtasks.get(a).getIdOfEpic()) {
+                transitSubtask = subtasks.get(a);
+                return transitSubtask;
+            }
+
+        }
+        return null;
+    }
+
+    public void updateEpic (Epic epic) {
+        Status status1 = Status.valueOf("DONE");
+            int b = epic.getId();
+            int count = 0;
+            for (SubTask t : subtasks.values()) {
+                if (t.getIdOfEpic() == epic.getId()) {
+                    count++;
+                }
+            }
+        System.out.println(count);
+        int countOfDone = 0;
+        for (SubTask t : subtasks.values()) {
+            if (t.getStatus().equals("DONE")) {
+                countOfDone++;
+            }
+        }
+        System.out.println(countOfDone);
+        if (count == countOfDone) {
+            epic.setStatus("DONE");
+        }
+        }
+
+
     public HashMap<Integer, Task> getTasks() {
 
         return tasks;
@@ -115,9 +150,7 @@ public class Manager {
         epics.remove(id);
     }
 
-    public void deleteSubtask(int id) {
-        subtasks.remove(id);
-    }
+
 /*
     public void changeTask() {
         ArrayList<Object> listOfSubtasks0 = new ArrayList<>();
