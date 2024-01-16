@@ -1,130 +1,124 @@
-import java.util.ArrayList;
+package controllers;
+
+
 import java.util.HashMap;
-import java.util.Scanner;
+
+import model.Status;
+import model.Task;
+import model.SubTask;
+import model.Epic;
 
 
 public class Manager {
-    int identificator=0;
-    Scanner scanner = new Scanner(System.in);
 
+    protected final HashMap<Integer, Task> tasks = new HashMap<>();
+    protected final HashMap<Integer, Epic> epics = new HashMap<>();
+    protected final HashMap<Integer, SubTask> subtasks = new HashMap<>();
 
-    HashMap<Integer, Object> listOfTasksWithId = new HashMap<>();
+    int identificator = 0;
     private String name;
     private String detail;
     Status status;
     int id;
-    Task task1 = new Task(name, detail,id,status);
 
 
-    public void addNewTask() {
 
-        while (true) {
-            System.out.println("Хотите внести задачу или подзадачу? Задача - 1, Подзадача - 2");
-            String answer = scanner.nextLine();
-            if (answer.equals("1")) {
-                identificator++;
-                System.out.println("Введите название задачи");
-                name = scanner.nextLine();
-                System.out.println("Внесите пояснение к задаче");
-                detail = scanner.nextLine();
-                id = identificator;
-                Task task1 = new Task(name, detail,id,Status.NEW);
-                listOfTasksWithId.put(identificator,task1);
-                System.out.println("Задача внесена с идентефикатором " + id);
-                break;
+    public int addNewTask(Task task) {
+        identificator++;
+        task.setId(identificator);
+                tasks.put(identificator,task);
+                System.out.println("Задача внесена с идентефикатором " + identificator);
+                return identificator;
 
-            } else if (answer.equals("2")) {
-                ArrayList<Object> listOfSubtasks0 = new ArrayList<>();
-                Epic epic0 = new Epic("a", "b", 0, Status.NEW, listOfSubtasks0);
-
-
-                System.out.println("Введите ИД задачи к которой надо добавить под задачу:");
-                int answerForId = scanner.nextInt();
-                Task transitTask = null;
-                for (int answer1: listOfTasksWithId.keySet()) {
-                    if (answer1==answerForId) {
-                        transitTask = (Task) listOfTasksWithId.get(answer1);
-
-                    }
-                }
-                if (transitTask == null) {
-                    System.out.println("Такая задача не найдена!");
-                    break;
-                }
-                if (epic0.getClass() == transitTask.getClass()) {
-                    scanner.nextLine();
-                    System.out.println("Введите название задачи");
-                    name = scanner.nextLine();
-                    System.out.println("Внесите пояснение к задаче");
-                    detail = scanner.nextLine();
-                    id = answerForId;
-                    SubTask subtask = new SubTask(name, detail, id, Status.NEW, 0);
-                    ((Epic) transitTask).getListOfSubtasks().add(subtask);
-                    subtask.setIdOfSubtusk(((Epic) transitTask).getListOfSubtasks().indexOf(subtask) + 1);
-                    break;
-
-                } else {
-
-                    ArrayList<Object> listOfSubtasks = new ArrayList<>();
-                    listOfTasksWithId.remove(answerForId);
-                    scanner.nextLine();
-                    System.out.println("Введите название задачи");
-                    name = scanner.nextLine();
-                    System.out.println("Внесите пояснение к задаче");
-                    detail = scanner.nextLine();
-                    id = answerForId;
-                    SubTask subtask = new SubTask(name, detail, id, Status.NEW, 0);
-                    listOfSubtasks.add(subtask);
-                    subtask.setIdOfSubtusk(listOfSubtasks.indexOf(subtask) + 1);
-                    Epic epic1 = new Epic(transitTask.getName(), transitTask.getDetail(), transitTask.getId(), transitTask.getStatus(), listOfSubtasks);
-                    listOfTasksWithId.put(answerForId, epic1);
-
-                    break;
-                }
-            } else {
-                System.out.println("Введите 1 или 2");
-            }
-        }
-    }
-    public void printAllTask () {
-
-        for (int i = 1; i <= identificator; i++) {
-            if (listOfTasksWithId.get(i) != null) {
-                System.out.println(listOfTasksWithId.get(i));
-            }
-
-        }
     }
 
-    public void removeTask() {
+    public int addNewEpic(Epic epic) {
+        identificator++;
+        epic.setId(identificator);
+        epics.put(identificator,epic);
+        System.out.println("Эпик внесен с идентефикатором " + identificator);
+        return identificator;
 
-        listOfTasksWithId.clear();
-        System.out.println("Список задач пуст");
     }
-    public void getById() {
-        System.out.println("Введите ИД задачи, которую ищете:");
-        int answerForId = scanner.nextInt();
+
+    public int addNewSubTask(SubTask subtask) {
+        identificator++;
+        subtask.setId(identificator);
+        subtasks.put(identificator,subtask);
+        System.out.println("Подзадача внесена с идентефикатором " + identificator);
+        return identificator;
+
+    }
+
+
+
+    public void removeAllTasks() {
+
+        tasks.clear();
+        subtasks.clear();
+        epics.clear();
+
+    }
+
+
+
+    public Task getTask(int id) {
         Task transitTask = null;
-        for (int answer: listOfTasksWithId.keySet()) {
-            if (answer==answerForId) {
-                transitTask = (Task) listOfTasksWithId.get(answer);
-                System.out.println("Нашли!");
-                System.out.println(transitTask);
+        for (int a: tasks.keySet()) {
+            if (a == id) {
+                transitTask = tasks.get(id);
             }
         }
+        return transitTask;
+    }
 
-    }
-    public void removeById() {
-        System.out.println("Введите идентификатор задачи, которую надо удалить: ");
-        int answerForId = scanner.nextInt();
-        for (int answer: listOfTasksWithId.keySet()) {
-            if (answer==answerForId) {
-                listOfTasksWithId.remove(answerForId);
-                System.out.println("Удалили!");
-                return;
+    public SubTask getSubtask(int id) {
+        SubTask transitSubtask = null;
+        for (int a: subtasks.keySet()) {
+            if (a == id) {
+                transitSubtask = subtasks.get(id);
             }
         }
+        return transitSubtask;
     }
+
+    public Epic getEpic(int id) {
+        Epic transitEpic = null;
+        for (int a: epics.keySet()) {
+            if (a == id) {
+                transitEpic = epics.get(id);
+            }
+        }
+        return transitEpic;
+    }
+
+    public HashMap<Integer, Task> getTasks() {
+
+        return tasks;
+    }
+
+    public HashMap<Integer, Epic> getEpics() {
+
+        return epics;
+    }
+
+    public HashMap<Integer, SubTask> getSubtasks() {
+
+        return subtasks;
+    }
+
+    public void deleteTask(int id) {
+        tasks.remove(id);
+    }
+
+    public void deleteEpic(int id) {
+        epics.remove(id);
+    }
+
+    public void deleteSubtask(int id) {
+        subtasks.remove(id);
+    }
+/*
     public void changeTask() {
         ArrayList<Object> listOfSubtasks0 = new ArrayList<>();
         Epic epic0 = new Epic("a", "b", 0, Status.NEW, listOfSubtasks0);
@@ -242,5 +236,5 @@ public class Manager {
             }
         }
     }
-
+*/
 }

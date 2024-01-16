@@ -1,22 +1,27 @@
+package model;
+
 public class Task {
 
-    String name;
-    String detail;
-    int id;
-    Status status;
-    public Task(String name, String detail, int id, Status status) {
+    protected String name;
+    protected String detail;
+    protected int id;
+    protected Status status;
+
+    public Task(String name, String detail, String a) {
         this.name = name;
         this.detail = detail;
-        this.id = id;
-        this.status = status;
+        setStatus(a);
 
     }
 
-
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
     }
+
 
     public String getDetail() {
         return detail;
@@ -30,24 +35,24 @@ public class Task {
         return status;
     }
 
-    public Status setStatus(String answer, Task task) {
+    public void setStatus(String answer) {
         switch (answer) {
             case "NEW":
-                task.status = Status.NEW;
+                status = Status.NEW;
 
                 break;
-            case "INPROGRESS":
-                task.status = Status.INPROGRESS;
-                return task.status;
+            case "IN_PROGRESS":
+                status = Status.INPROGRESS;
+                break;
 
             case "DONE":
-                task.status = Status.DONE;
+                status = Status.DONE;
 
                 break;
             default:
                 System.out.println("Неверный статус");
         }
-        return task.status;
+
     }
 
     @Override
