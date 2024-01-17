@@ -30,6 +30,7 @@ public class Manager {
                 tasks.put(identificator,task);
                 return identificator;
 
+
     }
 
     public int addNewEpic(Epic epic) {
