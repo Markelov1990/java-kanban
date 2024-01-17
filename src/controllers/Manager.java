@@ -20,6 +20,7 @@ public class Manager {
     private String detail;
     Status status;
     int id;
+    Epic epic0 = new Epic("a", "a","0");
 
 
 
@@ -27,7 +28,6 @@ public class Manager {
         identificator++;
         task.setId(identificator);
                 tasks.put(identificator,task);
-                System.out.println("Задача внесена с идентефикатором " + identificator);
                 return identificator;
 
     }
@@ -36,8 +36,8 @@ public class Manager {
         identificator++;
         epic.setId(identificator);
         epics.put(identificator,epic);
-        System.out.println("Эпик внесен с идентефикатором " + identificator);
         return identificator;
+
 
     }
 
@@ -45,10 +45,12 @@ public class Manager {
         identificator++;
         subtask.setId(identificator);
         subtasks.put(identificator,subtask);
-        System.out.println("Подзадача внесена с идентефикатором " + identificator);
+        epics.get(subtask.getIdOfEpic()).getListOfSubtasks().add(subtask);
         return identificator;
 
     }
+
+
 
 
 
@@ -106,21 +108,21 @@ public class Manager {
 
     public void updateEpic (Epic epic) {
         Status status1 = Status.valueOf("DONE");
-            int b = epic.getId();
+            int b = epic.getId() + 1;
             int count = 0;
             for (SubTask t : subtasks.values()) {
                 if (t.getIdOfEpic() == epic.getId()) {
                     count++;
                 }
             }
-        System.out.println(count);
+
         int countOfDone = 0;
         for (SubTask t : subtasks.values()) {
-            if (t.getStatus().equals("DONE")) {
+            if (t.getStatus().equals(status1)) {
                 countOfDone++;
             }
         }
-        System.out.println(countOfDone);
+
         if (count == countOfDone) {
             epic.setStatus("DONE");
         }

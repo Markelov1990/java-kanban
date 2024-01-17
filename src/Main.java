@@ -53,13 +53,7 @@ public class Main {
         System.out.println("Эпики:");
         for (Epic e : manager.getEpics().values()) {
             System.out.println(e);
-            int b = e.getId();
-           for (SubTask t : manager.getSubtasks().values()) {
-               t = manager.getEpicSubtasks(b);
-               System.out.println("--> " + t);
-               break;
 
-           }
         }
         final Epic epic = manager.getEpic(epicId1);
         epic.setStatus("NEW");
@@ -69,13 +63,7 @@ public class Main {
         System.out.println("Эпики:");
         for (Task e : manager.getEpics().values()) {
             System.out.println(e);
-            int b = e.getId();
-            for (SubTask t : manager.getSubtasks().values()) {
-                t = manager.getEpicSubtasks(b);
-                System.out.println("--> " + t);
-                break;
 
-            }
         }
 
 
@@ -101,16 +89,6 @@ public class Main {
         System.out.println("Эпики:");
         for (Task epic : manager.getEpics().values()) {
             System.out.println(epic);
-          System.out.println("--> Подзадачи эпика:");
-
-            int b = epic.getId();
-            for (SubTask t : manager.getSubtasks().values()) {
-                t = manager.getEpicSubtasks(b);
-                System.out.println("--> " + t);
-                break;
-
-            }
-
 
         }
 

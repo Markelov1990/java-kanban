@@ -43,7 +43,6 @@ public class Task {
 
                 break;
             default:
-                System.out.println("Неверный статус");
         }
 
     }
