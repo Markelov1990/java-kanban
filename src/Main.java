@@ -39,6 +39,7 @@ public class Main {
         }
         SubTask subtask = manager.getSubtask(subtaskId2);
         subtask.setStatus("DONE");
+        manager.updateEpic(epic1);
         //manager.updateSubtask(subtask); - не совсем понимаю, зачем нужен этот метод, если статус меняется в предедущей строчке.
         System.out.println("CHANGE STATUS: Subtask2 NEW->DONE");
         subtask = manager.getSubtask(subtaskId3);
@@ -57,7 +58,7 @@ public class Main {
         }
         final Epic epic = manager.getEpic(epicId1);
         epic.setStatus("NEW");
-        manager.updateEpic(epic);
+        manager.updateEpic(epic1);
         System.out.println("CHANGE STATUS: Epic1 IN_PROGRESS->NEW");
         printAllTasks(manager);
         System.out.println("Эпики:");
@@ -71,7 +72,7 @@ public class Main {
         System.out.println("DELETE: Task1");
         manager.deleteTask(taskId1);
         System.out.println("DELETE: Epic1");
-        manager.deleteEpic(epicId1);
+        manager.deleteEpic(epicId2);
         printAllTasks(manager);
 
         manager.deleteTasks();
