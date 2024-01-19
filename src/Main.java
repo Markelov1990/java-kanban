@@ -34,7 +34,7 @@ public class Main {
         //manager.updateTask(task); - не совсем понимаю, зачем нужен этот метод, если статус меняется в предедущей строчке.
         System.out.println("CHANGE STATUS: Task2 IN_PROGRESS->DONE");
         System.out.println("Задачи:");
-        for (Task t : manager.getTasks().values()) {
+        for (Task t : manager.getTasks()) {
             System.out.println(t);
         }
         SubTask subtask = manager.getSubtask(subtaskId2);
@@ -47,11 +47,11 @@ public class Main {
         //manager.updateSubtask(subtask); - не совсем понимаю, зачем нужен этот метод, если статус меняется в предедущей строчке.
         System.out.println("CHANGE STATUS: Subtask3 NEW->DONE");
         System.out.println("Подзадачи:");
-        for (Task t : manager.getSubtasks().values()) {
+        for (Task t : manager.getSubtasks()) {
             System.out.println(t);
         }
         System.out.println("Эпики:");
-        for (Epic e : manager.getEpics().values()) {
+        for (Epic e : manager.getEpics()) {
             System.out.println(e);
 
         }
@@ -61,7 +61,7 @@ public class Main {
         System.out.println("CHANGE STATUS: Epic1 IN_PROGRESS->NEW");
         printAllTasks(manager);
         System.out.println("Эпики:");
-        for (Task e : manager.getEpics().values()) {
+        for (Task e : manager.getEpics()) {
             System.out.println(e);
 
         }
@@ -74,7 +74,9 @@ public class Main {
         manager.deleteEpic(epicId1);
         printAllTasks(manager);
 
-        manager.removeAllTasks();
+        manager.deleteTasks();
+        manager.deleteSubtasks();
+        manager.deleteEpics();
     }
 
 
@@ -82,19 +84,20 @@ public class Main {
 
     private static void printAllTasks(Manager manager) {
         System.out.println("Задачи:");
-        for (Task task : manager.getTasks().values()) {
+        for (Task task : manager.getTasks()) {
             System.out.println(task);
         }
 
         System.out.println("Эпики:");
-        for (Task epic : manager.getEpics().values()) {
+        for (Task epic : manager.getEpics()) {
             System.out.println(epic);
+
 
         }
 
 
             System.out.println("Подзадачи:");
-            for (Task subtask : manager.getSubtasks().values()) {
+            for (Task subtask : manager.getSubtasks()) {
                 System.out.println(subtask);
             }
 
