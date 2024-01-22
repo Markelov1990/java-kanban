@@ -1,4 +1,5 @@
 import controllers.InMemoryTaskManager;
+import controllers.Managers;
 import model.Task;
 import model.SubTask;
 import model.Epic;
@@ -8,7 +9,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
+        InMemoryTaskManager inMemoryTaskManager = Managers.getDefault();
         Task task1 = new Task("model.Task #1", "Task1 description", "NEW");
         Task task2 = new Task("model.Task #2", "Task2 description", "IN_PROGRESS");
         final int taskId1 = inMemoryTaskManager.addNewTask(task1);
