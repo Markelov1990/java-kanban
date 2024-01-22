@@ -8,28 +8,18 @@ import model.Status;
 import model.Task;
 import model.SubTask;
 import model.Epic;
-/*
-Все что нужно поправил. По ТЗ:
-  Получить список всех задач - есть
-  Удалить все задачи - есть в три отдельных метода для задач, подзадач и эпиков
-   Получить задачу по идентификатору - есть, для эпиков выдает сразу подзадачи
-    Создать задачу - есть записывает в три отдельных списка
-    Обновить задачу - есть, у Эпика меняется при изменении статуса подзадачи
-    Удалить задачу по ИД - есть, у эпиков удаляются также подзадачи, по их номерам мы вроде определили, что номер
-      только общий его удалять не надо
-    Получить список подзадач Эпика - есть и отдельный метод и печатаеся при выведении всех задач к Эпику
-     Изменить статус задачи - есть статусы меняются и у Задач, и у Подзадач, и у Эпика через подзадачи.
- */
 
-public class Manager {
+
+public class InMemoryTaskManager implements TaskManager {
 
     protected final HashMap<Integer, Task> tasks = new HashMap<>();
     protected final HashMap<Integer, Epic> epics = new HashMap<>();
     protected final HashMap<Integer, SubTask> subtasks = new HashMap<>();
+    protected final HistoryManager historyManager = Managers.getDefaultHistory();
 
     private int identificator = 0;
 
-
+    @Override
     public int addNewTask(Task task) {
         identificator++;
         task.setId(identificator);
@@ -38,7 +28,7 @@ public class Manager {
 
 
     }
-
+    @Override
     public int addNewEpic(Epic epic) {
         identificator++;
         epic.setId(identificator);
@@ -47,7 +37,7 @@ public class Manager {
 
 
     }
-
+    @Override
     public int addNewSubTask(SubTask subtask) {
         identificator++;
         subtask.setId(identificator);
@@ -57,11 +47,11 @@ public class Manager {
 
     }
 
-
+    @Override
     public void deleteTasks() {
         tasks.clear();
     }
-
+    @Override
     public void deleteSubtasks() {
         for (Epic epic : epics.values()) {
             epic.cleanSubtaskIds(); //Как и писал до этого определнных ИД нет и их списка тоже, потому сделал метод по удалению всех подзадач в эпике.
@@ -71,27 +61,30 @@ public class Manager {
     }
 
 
-
+    @Override
     public void deleteEpics() {
         epics.clear();
         subtasks.clear();
     }
 
-
+    @Override
     public Task getTask(int id) {
+        historyManager.add(tasks.get(id));
         return tasks.get(id);
     }
-
+    @Override
     public SubTask getSubtask(int id) {
 
+        historyManager.add(subtasks.get(id));
         return subtasks.get(id);
     }
-
+    @Override
     public Epic getEpic(int id) {
 
+        historyManager.add(epics.get(id));
         return epics.get(id);
     }
-
+    @Override
     public SubTask getEpicSubtasks(int idOfEpic) {
         SubTask transitSubtask = null;
         for (int a : subtasks.keySet()) {
@@ -103,7 +96,7 @@ public class Manager {
         }
         return null;
     }
-
+    @Override
     public void updateEpic(Epic epic) {
         Status status1 = Status.DONE;
         int count = 0;
@@ -128,28 +121,28 @@ public class Manager {
     }
 
 
-
+    @Override
     public ArrayList<Task> getTasks() {
         return new ArrayList<>(tasks.values());
     }
-
+    @Override
     public ArrayList<Epic> getEpics() {
         return new ArrayList<>(epics.values());
     }
-
+    @Override
     public ArrayList<SubTask> getSubtasks() {
         return new ArrayList<>(subtasks.values());
     }
-
+    @Override
     public void deleteTask(int id) {
 
         tasks.remove(id);
 
     }
-
+    @Override
     public void deleteEpic(int id) {
 
-        final Epic epic = epics.remove(id);
+        epics.remove(id);
 
         for (SubTask subTask : subtasks.values()) {
             if (subTask.getIdOfEpic() == id) {
@@ -158,7 +151,7 @@ public class Manager {
         }
 
     }
-
+    @Override
     public void deleteSubtask(int id) {
         SubTask subtask = subtasks.remove(id);
         if (subtask == null) {
@@ -168,4 +161,9 @@ public class Manager {
         epic.getListOfSubtasks().remove(id);
         updateEpic(epic);
     }
+    @Override
+    public ArrayList<Task> getHistory() {
+        return historyManager.getHistory();
+    }
+
 }

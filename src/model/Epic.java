@@ -17,10 +17,6 @@ public class Epic extends Task {
         return listOfSubtasks;
     }
 
-    public void setListOfSubtasks(ArrayList<Object> listOfSubtasks) {
-        this.listOfSubtasks = listOfSubtasks;
-    }
-
     public void cleanSubtaskIds() {
         listOfSubtasks.clear();
     }
