@@ -143,13 +143,15 @@ class MainTest {
     //убедитесь, что задачи, добавляемые в HistoryManager, сохраняют предыдущую версию задачи и её данных.
     @Test
     void historyCheckOldAndNewVersionEmptyTest() {
-        HistoryManager historyManager = Managers.getDefaultHistory();
+        InMemoryTaskManager inMemoryTaskManager = Managers.getDefault();
         Task task = new Task("Test addNewTask", "Test addNewTask description", "NEW");
-        historyManager.add(task);
-        final ArrayList<Task> history = historyManager.getHistory();
-        assertNotNull(history, "История не пустая.");
-        assertEquals(1, history.size(), "История не пустая.");
+        final int taskId = inMemoryTaskManager.addNewTask(task);
+        inMemoryTaskManager.getTask(taskId);
+        inMemoryTaskManager.getTask(taskId).setStatus("DONE");
+        inMemoryTaskManager.getTask(taskId);
+
+        assertEquals(inMemoryTaskManager.getHistory().get(0), inMemoryTaskManager.getHistory().get(1), "Задачи совпали, а не должны были");
+
+
     }
-
-
 }
