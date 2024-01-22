@@ -24,7 +24,7 @@ public class Main {
         final Integer subtaskId1 = inMemoryTaskManager.addNewSubTask(subtask1);
         final Integer subtaskId2 = inMemoryTaskManager.addNewSubTask(subtask2);
         final Integer subtaskId3 = inMemoryTaskManager.addNewSubTask(subtask3);
-        printAllTasks(inMemoryTaskManager);
+        //printAllTasks(inMemoryTaskManager);
         // Обновление
 
         final Task task = inMemoryTaskManager.getTask(taskId2);
