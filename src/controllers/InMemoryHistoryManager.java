@@ -12,11 +12,17 @@ public class InMemoryHistoryManager implements  HistoryManager {
 
     @Override
     public void add(Task task) {
-        if (tasksHistory.size()>10) {
-            tasksHistory.remove(0);
-        }
+        if (task == null) {
+            System.out.println("Пустое значение");
+            // Или здесь лучше вообще ничего не писать?
+        } else {
+
+            if (tasksHistory.size() > 10) {
+                tasksHistory.remove(0);
+            }
 
             tasksHistory.add(task);
+        }
     }
 
     @Override
