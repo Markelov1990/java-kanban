@@ -1,10 +1,10 @@
+package tests;
+
 import controllers.HistoryManager;
-import controllers.InMemoryHistoryManager;
 import controllers.Managers;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
-import java.util.HashMap;
-import controllers.InMemoryTaskManager;
+import controllers.TaskManager;
 import model.Status;
 import model.Task;
 import model.SubTask;
@@ -17,8 +17,8 @@ class MainTest {
     // Тест из описания ТЗ
     @Test
     void addNewTaskTest() {
-        InMemoryTaskManager inMemoryTaskManager = Managers.getDefault();
-        Task task = new Task("Test addNewTask", "Test addNewTask description", "NEW");
+        TaskManager inMemoryTaskManager = Managers.getDefault();
+        Task task = new Task("Test addNewTask", "Test addNewTask description", Status.NEW);
         final int taskId = inMemoryTaskManager.addNewTask(task);
 
         final Task savedTask = inMemoryTaskManager.getTask(taskId);
@@ -37,7 +37,7 @@ class MainTest {
     @Test
     void historyIsNotEmptyTest() {
         HistoryManager historyManager = Managers.getDefaultHistory();
-        Task task = new Task("Test addNewTask", "Test addNewTask description", "NEW");
+        Task task = new Task("Test addNewTask", "Test addNewTask description", Status.NEW);
         historyManager.add(task);
         final ArrayList<Task> history = historyManager.getHistory();
         assertNotNull(history, "История не пустая.");
@@ -48,9 +48,9 @@ class MainTest {
 
     @Test
     void checkEqualsTaskTest() {
-        InMemoryTaskManager inMemoryTaskManager = Managers.getDefault();
-        Task task1 = new Task("Test addNewTask", "Test addNewTask description", "NEW");
-        Task task2 = new Task("Test addNewTask2", "Test addNewTask description2", "NEW");
+        TaskManager inMemoryTaskManager = Managers.getDefault();
+        Task task1 = new Task("Test addNewTask", "Test addNewTask description", Status.NEW);
+        Task task2 = new Task("Test addNewTask2", "Test addNewTask description2", Status.NEW);
         final int taskId = inMemoryTaskManager.addNewTask(task1);
         final int taskId2 = inMemoryTaskManager.addNewTask(task2);
 
@@ -64,9 +64,9 @@ class MainTest {
 
     @Test
     void checkEqualsEpicTest() {
-        InMemoryTaskManager inMemoryTaskManager = Managers.getDefault();
-        Epic epic1 = new Epic("Test addNewTask", "Test addNewTask description", "NEW");
-        Epic epic2 = new Epic("Test addNewTask2", "Test addNewTask description2", "NEW");
+        TaskManager inMemoryTaskManager = Managers.getDefault();
+        Epic epic1 = new Epic("Test addNewTask", "Test addNewTask description");
+        Epic epic2 = new Epic("Test addNewTask2", "Test addNewTask description2");
         final int epicId1 = inMemoryTaskManager.addNewEpic(epic1);
         final int epicId2 = inMemoryTaskManager.addNewEpic(epic2);
 
@@ -79,11 +79,11 @@ class MainTest {
     // 2 Тест проверьте, что экземпляры класса Task равны друг другу, если равен их id;
     @Test
     void checkEqualsSubtaskTest() {
-        InMemoryTaskManager inMemoryTaskManager = Managers.getDefault();
-        Epic epic1 = new Epic("Test addNewTask", "Test addNewTask description", "NEW");
-        SubTask subTask1 = new SubTask("Test addNewTask", "Test addNewTask description", "NEW", 1);
-        SubTask subTask2 = new SubTask("Test addNewTask2", "Test addNewTask description2", "NEW", 1);
+        TaskManager inMemoryTaskManager = Managers.getDefault();
+        Epic epic1 = new Epic("Test addNewTask", "Test addNewTask description");
         final int epicId1 = inMemoryTaskManager.addNewEpic(epic1);
+        SubTask subTask1 = new SubTask("Test addNewTask", "Test addNewTask description", Status.NEW, epicId1);
+        SubTask subTask2 = new SubTask("Test addNewTask2", "Test addNewTask description2", Status.NEW, epicId1);
         final int subTaskId1 = inMemoryTaskManager.addNewSubTask(subTask1);
         final int subTaskId2 = inMemoryTaskManager.addNewSubTask(subTask2);
 
@@ -108,12 +108,12 @@ class MainTest {
     @Test
     void managersReturnClassCheck() {
         HistoryManager historyManager = Managers.getDefaultHistory();
-        Task task = new Task("Test addNewTask", "Test addNewTask description", "NEW");
+        Task task = new Task("Test addNewTask", "Test addNewTask description", Status.NEW);
         historyManager.add(task);
         final ArrayList<Task> history = historyManager.getHistory();
         assertNotNull(history, "История пустая.");
-        InMemoryTaskManager inMemoryTaskManager = Managers.getDefault();
-        Task task1 = new Task("Test addNewTask", "Test addNewTask description", "NEW");
+        TaskManager inMemoryTaskManager = Managers.getDefault();
+        Task task1 = new Task("Test addNewTask", "Test addNewTask description", Status.NEW);
         final int taskId = inMemoryTaskManager.addNewTask(task1);
         assertNotNull(inMemoryTaskManager.getTask(taskId), "Задача пустая");
 
@@ -121,12 +121,12 @@ class MainTest {
     //проверьте, что InMemoryTaskManager действительно добавляет задачи разного типа и может найти их по id;
     @Test
     void checkAddedTasksAndFindById() {
-        InMemoryTaskManager inMemoryTaskManager = Managers.getDefault();
-        Task task1 = new Task("Test addNewTask", "Test addNewTask description", "NEW");
+        TaskManager inMemoryTaskManager = Managers.getDefault();
+        Task task1 = new Task("Test addNewTask", "Test addNewTask description", Status.NEW);
         final int taskId = inMemoryTaskManager.addNewTask(task1);
-        Epic epic1 = new Epic("Test addNewTask", "Test addNewTask description", "NEW");
+        Epic epic1 = new Epic("Test addNewTask", "Test addNewTask description");
         final int epicId1 = inMemoryTaskManager.addNewEpic(epic1);
-        SubTask subTask1 = new SubTask("Test addNewTask", "Test addNewTask description", "NEW", epicId1);
+        SubTask subTask1 = new SubTask("Test addNewTask", "Test addNewTask description", Status.NEW, epicId1);
         final int subTaskId1 = inMemoryTaskManager.addNewSubTask(subTask1);
 
 
@@ -143,8 +143,8 @@ class MainTest {
     //убедитесь, что задачи, добавляемые в HistoryManager, сохраняют предыдущую версию задачи и её данных.
     @Test
     void historyCheckOldAndNewVersionEmptyTest() {
-        InMemoryTaskManager inMemoryTaskManager = Managers.getDefault();
-        Task task = new Task("Test addNewTask", "Test addNewTask description", "NEW");
+        TaskManager inMemoryTaskManager = Managers.getDefault();
+        Task task = new Task("Test addNewTask", "Test addNewTask description", Status.NEW);
         final int taskId = inMemoryTaskManager.addNewTask(task);
         inMemoryTaskManager.getTask(taskId);
         inMemoryTaskManager.getTask(taskId).setStatus("DONE");

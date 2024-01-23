@@ -1,5 +1,7 @@
 import controllers.InMemoryTaskManager;
 import controllers.Managers;
+import controllers.TaskManager;
+import model.Status;
 import model.Task;
 import model.SubTask;
 import model.Epic;
@@ -9,18 +11,18 @@ public class Main {
 
     public static void main(String[] args) {
 
-        InMemoryTaskManager inMemoryTaskManager = Managers.getDefault();
-        Task task1 = new Task("model.Task #1", "Task1 description", "NEW");
-        Task task2 = new Task("model.Task #2", "Task2 description", "IN_PROGRESS");
+        TaskManager inMemoryTaskManager = Managers.getDefault();
+        Task task1 = new Task("model.Task #1", "Task1 description", Status.NEW);
+        Task task2 = new Task("model.Task #2", "Task2 description", Status.INPROGRESS);
         final int taskId1 = inMemoryTaskManager.addNewTask(task1);
         final int taskId2 = inMemoryTaskManager.addNewTask(task2);
-        Epic epic1 = new Epic("model.Epic #1", "Epic1 description", "NEW");
-        Epic epic2 = new Epic("model.Epic #2", "Epic2 description", "NEW");
+        Epic epic1 = new Epic("model.Epic #1", "Epic1 description");
+        Epic epic2 = new Epic("model.Epic #2", "Epic2 description");
         final int epicId1 = inMemoryTaskManager.addNewEpic(epic1);
         final int epicId2 = inMemoryTaskManager.addNewEpic(epic2);
-        SubTask subtask1 = new SubTask("Subtask #1-1", "Subtask1 description", "NEW", epicId1);
-        SubTask subtask2 = new SubTask("Subtask #2-1", "Subtask1 description", "NEW", epicId1);
-        SubTask subtask3 = new SubTask("Subtask #3-2", "Subtask1 description", "NEW", epicId2);
+        SubTask subtask1 = new SubTask("Subtask #1-1", "Subtask1 description", Status.NEW, epicId1);
+        SubTask subtask2 = new SubTask("Subtask #2-1", "Subtask1 description", Status.NEW, epicId1);
+        SubTask subtask3 = new SubTask("Subtask #3-2", "Subtask1 description", Status.NEW, epicId2);
         final Integer subtaskId1 = inMemoryTaskManager.addNewSubTask(subtask1);
         final Integer subtaskId2 = inMemoryTaskManager.addNewSubTask(subtask2);
         final Integer subtaskId3 = inMemoryTaskManager.addNewSubTask(subtask3);
@@ -79,7 +81,7 @@ public class Main {
 
 
 
-    private static void printAllTasks(InMemoryTaskManager inMemoryTaskManager) {
+    private static void printAllTasks(TaskManager inMemoryTaskManager) {
         System.out.println("Задачи:");
         for (Task task : inMemoryTaskManager.getTasks()) {
             System.out.println(task);
