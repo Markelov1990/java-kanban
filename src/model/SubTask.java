@@ -5,12 +5,12 @@ public class SubTask extends Task {
     private int idOfEpic;
 
 
-    public SubTask(String name, String detail, String a, int idOfEpic) {
+    public SubTask(String name, String detail, Status status, int idOfEpic) {
 
         super(name,
                 detail,
-                a);
-        setStatus(a);
+                status);
+
         this.idOfEpic = idOfEpic;
     }
 

@@ -7,11 +7,17 @@ public class Task {
     protected int id;
     protected Status status;
 
-    public Task(String name, String detail, String a) {
+    public Task(String name, String detail, Status status) {
         this.name = name;
         this.detail = detail;
-        setStatus(a);
+        this.status = status;
+        //setStatus(a);
 
+    }
+
+    public Task(String name, String detail) {
+        this.name = name;
+        this.detail = detail;
     }
 
     public void setId(int id) {

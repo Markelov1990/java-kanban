@@ -5,11 +5,10 @@ public class Epic extends Task {
 
     private ArrayList<Object> listOfSubtasks = new ArrayList<>();
 
-    public Epic(String name, String detail, String a) {
+    public Epic(String name, String detail) {
         super(name,
-                detail,
-                a);
-        setStatus(a);
+                detail);
+        this.status = Status.NEW;
 
     }
 
