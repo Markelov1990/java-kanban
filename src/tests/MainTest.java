@@ -4,6 +4,8 @@ import controllers.HistoryManager;
 import controllers.Managers;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
+import java.util.List;
+
 import controllers.TaskManager;
 import model.Status;
 import model.Task;
@@ -39,7 +41,7 @@ class MainTest {
         HistoryManager historyManager = Managers.getDefaultHistory();
         Task task = new Task("Test addNewTask", "Test addNewTask description", Status.NEW);
         historyManager.add(task);
-        final ArrayList<Task> history = historyManager.getHistory();
+        final List<Task> history = historyManager.getHistory();
         assertNotNull(history, "История не пустая.");
         assertEquals(1, history.size(), "История не пустая.");
     }
@@ -110,7 +112,7 @@ class MainTest {
         HistoryManager historyManager = Managers.getDefaultHistory();
         Task task = new Task("Test addNewTask", "Test addNewTask description", Status.NEW);
         historyManager.add(task);
-        final ArrayList<Task> history = historyManager.getHistory();
+        final List<Task> history = historyManager.getHistory();
         assertNotNull(history, "История пустая.");
         TaskManager inMemoryTaskManager = Managers.getDefault();
         Task task1 = new Task("Test addNewTask", "Test addNewTask description", Status.NEW);
@@ -141,6 +143,7 @@ class MainTest {
 
 
     //убедитесь, что задачи, добавляемые в HistoryManager, сохраняют предыдущую версию задачи и её данных.
+    //здесь изменил проверку на наличие такого же
     @Test
     void historyCheckOldAndNewVersionEmptyTest() {
         TaskManager inMemoryTaskManager = Managers.getDefault();
@@ -150,7 +153,8 @@ class MainTest {
         inMemoryTaskManager.getTask(taskId).setStatus("DONE");
         inMemoryTaskManager.getTask(taskId);
 
-        assertEquals(inMemoryTaskManager.getHistory().get(0), inMemoryTaskManager.getHistory().get(1), "Задачи совпали, а не должны были");
+
+        assertEquals(inMemoryTaskManager.getHistory().size(), 1, "Одна и та же задача запрошена дважды, но в истории сохранилось две");
 
 
     }

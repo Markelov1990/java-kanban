@@ -3,6 +3,7 @@ package controllers;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import model.Status;
 import model.Task;
@@ -167,7 +168,7 @@ public class InMemoryTaskManager implements TaskManager {
         updateEpic(epic);
     }
     @Override
-    public ArrayList<Task> getHistory() {
+    public List<Task> getHistory() {
         return historyManager.getHistory();
     }
 
