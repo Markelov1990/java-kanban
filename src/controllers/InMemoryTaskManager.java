@@ -56,7 +56,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void deleteSubtasks() {
         for (Epic epic : epics.values()) {
-            epic.cleanSubtaskIds(); //Как и писал до этого определнных ИД нет и их списка тоже, потому сделал метод по удалению всех подзадач в эпике.
+            epic.cleanSubtaskIds();
             updateEpic(epic);
         }
         subtasks.clear();
