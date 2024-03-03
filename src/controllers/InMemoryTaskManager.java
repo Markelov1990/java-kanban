@@ -3,6 +3,7 @@ package controllers;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import model.Status;
 import model.Task;
@@ -55,7 +56,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void deleteSubtasks() {
         for (Epic epic : epics.values()) {
-            epic.cleanSubtaskIds(); //Как и писал до этого определнных ИД нет и их списка тоже, потому сделал метод по удалению всех подзадач в эпике.
+            epic.cleanSubtaskIds();
             updateEpic(epic);
         }
         subtasks.clear();
@@ -167,7 +168,7 @@ public class InMemoryTaskManager implements TaskManager {
         updateEpic(epic);
     }
     @Override
-    public ArrayList<Task> getHistory() {
+    public List<Task> getHistory() {
         return historyManager.getHistory();
     }
 

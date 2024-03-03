@@ -11,7 +11,7 @@ public class Task {
         this.name = name;
         this.detail = detail;
         this.status = status;
-        //setStatus(a);
+
 
     }
 

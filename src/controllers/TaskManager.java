@@ -2,6 +2,7 @@ package controllers;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 import model.Status;
 import model.Task;
@@ -45,5 +46,5 @@ public interface TaskManager {
 
     void deleteSubtask(int id);
 
-    ArrayList<Task> getHistory();
+    List<Task> getHistory();
 }
