@@ -2,12 +2,15 @@ package controllers;
 
 import model.*;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 
 import static model.TaskType.*;
@@ -19,6 +22,12 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         this.path = path;
     }
 
+    public FileBackedTasksManager(HistoryManager historyManager, Path path) {
+
+        super(historyManager);
+        this.path = path;
+    }
+
     public FileBackedTasksManager(
             Path path,
             HashMap<Integer, Task> tasks,
@@ -26,6 +35,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
             HashMap<Integer, SubTask> subtasks,
             int startId
     ) {
+
         this.path = path;
         this.tasks = tasks;
         this.epics = epics;
@@ -37,12 +47,11 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         if (!Files.exists(path)) {
             return new FileBackedTasksManager(path);
         }
-
-
+        HashMap<Integer, Task> allTasks = new HashMap<>();
         HashMap<Integer, Task> tasks = new HashMap<>();
         HashMap<Integer, Epic> epics = new HashMap<>();
         HashMap<Integer, SubTask> subtasks = new HashMap<>();
-
+        HistoryManager historyManager = new InMemoryHistoryManager();
         int startId = 0;
 
         try {
@@ -54,6 +63,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 TaskType type = TaskType.valueOf(rows[i].split(",")[1]);
 
                 if (task.getId() > startId) startId = task.getId();
+                allTasks.put(task.getId(), task);
 
 
                 if (type == TASK) {
@@ -68,7 +78,11 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
             }
 
-            //History manager add
+            List<Integer> historyList = historyFromString(rows[rows.length - 1]);
+
+            historyList.forEach(id -> historyManager.add(allTasks.get(id)));
+
+
 
         } catch (IOException e) {
             throw new ManagerSaveException("Ошибка при восстановлении данных");
@@ -120,7 +134,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
 
-
     @Override
     public void updateEpic(Epic epic) {
         super.updateEpic(epic);
@@ -168,29 +181,31 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     protected void save() {
 
 
-            try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(path.toFile()))) {
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(path.toFile()))) {
 
 
-                bufferedWriter.write("id,type,name,status,detail,epic");
-                for (Task task : tasks.values()) {
-                    String stringTask = String.format("%s,%s,%s,%s,%s,%s", task.getId(), "TASK", task.getName(), task.getStatus(), task.getDetail());
-                    bufferedWriter.newLine();
-                    bufferedWriter.write(stringTask);
-                }
-                for (Epic epic : epics.values()) {
-                    String stringEpic = String.format("%s,%s,%s,%s,%s,%s", epic.getId(), "EPIC", epic.getName(), epic.getStatus(), epic.getDetail());
-                    bufferedWriter.newLine();
-                    bufferedWriter.write(stringEpic);
-                }
-                for (SubTask subtask : subtasks.values()) {
-                    String stringSubtask = String.format("%s,%s,%s,%s,%s,%s", subtask.getId(), "EPIC", subtask.getName(), subtask.getStatus(), subtask.getDetail(), subtask.getIdOfEpic());
-                    bufferedWriter.newLine();
-                    bufferedWriter.write(stringSubtask);
-                }
-
-            } catch (IOException e) {
-                throw new ManagerSaveException("Ошибка при сохранении данных");
+            bufferedWriter.write("id,type,name,status,detail,epic");
+            for (Task task : tasks.values()) {
+                String stringTask = String.format("%s,%s,%s,%s,%s,%s", task.getId(), "TASK", task.getName(), task.getStatus(), task.getDetail());
+                bufferedWriter.newLine();
+                bufferedWriter.write(stringTask);
             }
+            for (Epic epic : epics.values()) {
+                String stringEpic = String.format("%s,%s,%s,%s,%s,%s", epic.getId(), "EPIC", epic.getName(), epic.getStatus(), epic.getDetail());
+                bufferedWriter.newLine();
+                bufferedWriter.write(stringEpic);
+            }
+            for (SubTask subtask : subtasks.values()) {
+                String stringSubtask = String.format("%s,%s,%s,%s,%s,%s", subtask.getId(), "EPIC", subtask.getName(), subtask.getStatus(), subtask.getDetail(), subtask.getIdOfEpic());
+                bufferedWriter.newLine();
+                bufferedWriter.write(stringSubtask);
+            }
+            bufferedWriter.write(historyToString(historyManager));
+
+
+        } catch (IOException e) {
+            throw new ManagerSaveException("Ошибка при сохранении данных");
+        }
 
     }
 
@@ -206,7 +221,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
 
         if (type == TASK) {
-            Task task2 =  new Task(name, detail, status);
+            Task task2 = new Task(name, detail, status);
             task2.setId(id);
             return task2;
         } else if (type == SUBTASK) {
@@ -219,5 +234,38 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
             return epic2;
         }
         return task1;
+    }
+
+
+    static String historyToString(HistoryManager manager) {
+        List<Task> history = manager.getHistory();
+        StringBuilder str = new StringBuilder();
+
+        if (history.isEmpty()) {
+            return "";
+        }
+
+        for (Task task : history) {
+            str.append(task.getId()).append(",");
+        }
+
+        if (str.length() != 0) {
+            str.deleteCharAt(str.length() - 1);
+        }
+
+        return str.toString();
+    }
+
+
+    static List<Integer> historyFromString(String value) {
+        List<Integer> list = new ArrayList<>();
+        if (value != null) {
+            String[] value1 = value.split(",");;
+            for (String number : value1) {
+                list.add(Integer.parseInt(number));
+            }
+            return list;
+        }
+        return list;
     }
 }
