@@ -2,11 +2,13 @@ package controllers;
 
 import model.*;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
-import java.util.Map;
+
 
 import static model.TaskType.*;
 
@@ -52,8 +54,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 TaskType type = TaskType.valueOf(rows[i].split(",")[1]);
 
                 if (task.getId() > startId) startId = task.getId();
-
-
 
 
                 if (type == TASK) {
@@ -166,19 +166,39 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     protected void save() {
-        try {
-            // Сделать метод
 
-        } catch (IOException e) {
-            throw new ManagerSaveException("Ошибка при сохранении данных");
-        }
+
+            try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(path.toFile()))) {
+
+
+                bufferedWriter.write("id,type,name,status,detail,epic");
+                for (Task task : tasks.values()) {
+                    String stringTask = String.format("%s,%s,%s,%s,%s,%s", task.getId(), "TASK", task.getName(), task.getStatus(), task.getDetail());
+                    bufferedWriter.newLine();
+                    bufferedWriter.write(stringTask);
+                }
+                for (Epic epic : epics.values()) {
+                    String stringEpic = String.format("%s,%s,%s,%s,%s,%s", epic.getId(), "EPIC", epic.getName(), epic.getStatus(), epic.getDetail());
+                    bufferedWriter.newLine();
+                    bufferedWriter.write(stringEpic);
+                }
+                for (SubTask subtask : subtasks.values()) {
+                    String stringSubtask = String.format("%s,%s,%s,%s,%s,%s", subtask.getId(), "EPIC", subtask.getName(), subtask.getStatus(), subtask.getDetail(), subtask.getIdOfEpic());
+                    bufferedWriter.newLine();
+                    bufferedWriter.write(stringSubtask);
+                }
+
+            } catch (IOException e) {
+                throw new ManagerSaveException("Ошибка при сохранении данных");
+            }
+
     }
 
     static private Task fromString(String value) {
         Task task1 = new Task("0", "0", Status.DONE);
         String[] splitValue = value.split(",");
         int id = Integer.parseInt(splitValue[0]);
-        TaskType type = TaskType.valueOf(splitValue[1]);
+        TaskType type = valueOf(splitValue[1]);
         String name = splitValue[2];
         Status status = Status.valueOf(splitValue[3]);
         String detail = splitValue[4];
