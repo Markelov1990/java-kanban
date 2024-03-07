@@ -1,8 +1,8 @@
 package controllers;
 
+import exceptions.ManagerSaveException;
 import model.*;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -209,7 +209,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
     }
 
-    static private Task fromString(String value) {
+    private static Task fromString(String value) {
         Task task1 = new Task("0", "0", Status.DONE);
         String[] splitValue = value.split(",");
         int id = Integer.parseInt(splitValue[0]);
@@ -237,7 +237,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
 
-    static String historyToString(HistoryManager manager) {
+    private static String historyToString(HistoryManager manager) {
         List<Task> history = manager.getHistory();
         StringBuilder str = new StringBuilder();
 
@@ -257,7 +257,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
 
-    static List<Integer> historyFromString(String value) {
+    private static List<Integer> historyFromString(String value) {
         List<Integer> list = new ArrayList<>();
         if (value != null) {
             String[] value1 = value.split(",");;
