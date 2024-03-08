@@ -13,12 +13,20 @@ import model.Epic;
 
 public class InMemoryTaskManager implements TaskManager {
 
-    protected final HashMap<Integer, Task> tasks = new HashMap<>();
-    protected final HashMap<Integer, Epic> epics = new HashMap<>();
-    protected final HashMap<Integer, SubTask> subtasks = new HashMap<>();
-    protected final HistoryManager historyManager = Managers.getDefaultHistory();
+    protected HashMap<Integer, Task> tasks = new HashMap<>();
+    protected HashMap<Integer, Epic> epics = new HashMap<>();
+    protected HashMap<Integer, SubTask> subtasks = new HashMap<>();
+    protected HistoryManager historyManager = Managers.getDefaultHistory();
 
     private int identificator = 0;
+
+    public InMemoryTaskManager(HistoryManager historyManager) {
+
+        this.historyManager = historyManager;
+    }
+
+    public InMemoryTaskManager() {
+    }
 
     @Override
     public int addNewTask(Task task) {
