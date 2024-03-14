@@ -52,6 +52,14 @@ public class Task {
         return startTime.plusSeconds(duration * 60);
     }
 
+    public void setStartTime(Instant startTime) {
+        this.startTime = startTime;
+    }
+
+    public void setDuration(long duration) {
+        this.duration = duration;
+    }
+
     public int getId() {
         return id;
     }

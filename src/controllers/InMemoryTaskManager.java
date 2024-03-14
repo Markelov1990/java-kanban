@@ -117,10 +117,7 @@ public class InMemoryTaskManager implements TaskManager {
         Status status3 = Status.NEW;
         int count = epic.getListOfSubtasks().size();
 
-        SubTask a = (SubTask) epic.getListOfSubtasks().get(0);
 
-        Instant startTime = a.getStartTime();
-        Instant endTime = a.getEndTime();
 
 
         int countOfDone = 0;
@@ -132,8 +129,7 @@ public class InMemoryTaskManager implements TaskManager {
             } else if (t.getStatus().equals(status2)) {
                 countOfInprogress++;
             }
-            if (t.getStartTime().isBefore(startTime)) startTime = t.getStartTime();
-            if (t.getEndTime().isAfter(endTime)) endTime = t.getEndTime();
+
 
         }
 
@@ -144,6 +140,23 @@ public class InMemoryTaskManager implements TaskManager {
         } else {
             epic.setStatus("NEW");
         }
+
+        List<SubTask> subtasks = epic.getListOfSubtasks();
+        Instant startTime = subtasks.get(0).getStartTime();
+        Instant endTime = subtasks.get(0).getEndTime();
+
+        for (SubTask subtask : subtasks) {
+            if (subtask.getStartTime().isBefore(startTime)) {
+                startTime = subtask.getStartTime();
+            } else if (subtask.getEndTime().isAfter(endTime)) {
+                endTime = subtask.getEndTime();
+            }
+        }
+        epic.setStartTime(startTime);
+        epic.setEndTime(endTime);
+        long duration = (endTime.toEpochMilli() - startTime.toEpochMilli());
+        epic.setDuration(duration);
+
     }
 
 
@@ -203,8 +216,10 @@ public class InMemoryTaskManager implements TaskManager {
         for (int i = 1; i < tasks.size(); i++) {
             Task task = tasks.get(i);
 
-            if (task.getStartTime().isBefore(tasks.get(i - 1).getEndTime())) {
-                throw new ManagerValidateException("Задачи: " + task.getId() + " и " + tasks.get(i - 1) + " пересекаются!");
+            boolean taskHasIntersections = task.getStartTime().isBefore(tasks.get(i - 1).getEndTime());
+
+            if (taskHasIntersections) {
+                throw new ManagerValidateException("Задачи: " + task.getId() + " и " + tasks.get(i - 1).getId() + " пересекаются!");
             }
         }
     }

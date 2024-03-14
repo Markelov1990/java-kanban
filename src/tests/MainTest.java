@@ -5,6 +5,8 @@ import controllers.InMemoryTaskManager;
 import controllers.Managers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,17 +36,18 @@ class MainTest {
 
     @BeforeEach
     void beforeEach(){
-        task1 = new Task("Test addNewTask", "Test addNewTask description", Status.NEW);
+
+        task1 = new Task("model.Task #1", "Task1 description", Status.NEW, Instant.ofEpochMilli(1689445500000L), 1);
         taskId = inMemoryTaskManager.addNewTask(task1);
-        task2 = new Task("Test addNewTask2", "Test addNewTask description2", Status.NEW);
+        task2 = new Task("model.Task #2", "Task2 description", Status.NEW, Instant.ofEpochMilli(2682336600000L), 2);
         taskId2 = inMemoryTaskManager.addNewTask(task2);
-        epic1 = new Epic("Test addNewTask", "Test addNewTask description");
+        epic1 = new Epic("model.Epic #1", "Epic1 description", Instant.ofEpochMilli(3681003300000L),3);
         epicId1 = inMemoryTaskManager.addNewEpic(epic1);
-        epic2 = new Epic("Test addNewTask2", "Test addNewTask description2");
+        epic2 = new Epic("model.Epic #2", "Epic2 description", Instant.ofEpochMilli(4671003300000L), 4);
         epicId2 = inMemoryTaskManager.addNewEpic(epic2);
-        subTask1 = new SubTask("Test addNewTask", "Test addNewTask description", Status.NEW, epic1.getId());
+        subTask1 = new SubTask("Subtask #1-1", "Subtask1 description", Status.NEW, epicId1, Instant.ofEpochMilli(5691003300000L), 5);
         subTaskId1 = inMemoryTaskManager.addNewSubTask(subTask1);
-        subTask2 = new SubTask("Test addNewTask2", "Test addNewTask description2", Status.NEW, epic1.getId());
+        subTask2 = new SubTask("Subtask #2-1", "Subtask1 description", Status.NEW, epicId1, Instant.ofEpochMilli(669903300000L), 6);
         subTaskId2 = inMemoryTaskManager.addNewSubTask(subTask2);
 
     }
@@ -140,7 +143,6 @@ class MainTest {
 
 
         assertEquals(inMemoryTaskManager.getHistory().size(), 1, "Одна и та же задача запрошена дважды, но в истории сохранилось две");
-
-
     }
+
 }

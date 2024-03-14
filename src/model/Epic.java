@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class Epic extends Task {
 
-    private final ArrayList<Object> listOfSubtasks = new ArrayList<>();
-    private final Instant endTime;
+    private final ArrayList<SubTask> listOfSubtasks = new ArrayList<>();
+    private Instant endTime;
 
     public Epic(String name, String detail, Instant startTime, long duration) {
         super(name,
@@ -15,12 +15,16 @@ public class Epic extends Task {
 
     }
 
-    public ArrayList<Object> getListOfSubtasks() {
+    public ArrayList<SubTask> getListOfSubtasks() {
         return listOfSubtasks;
     }
 
     public void cleanSubtaskIds() {
         listOfSubtasks.clear();
+    }
+
+    public void setEndTime(Instant endTime) {
+        this.endTime = endTime;
     }
 
 
