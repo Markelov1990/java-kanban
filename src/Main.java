@@ -18,12 +18,12 @@ public class Main {
         final int taskId1 = inMemoryTaskManager.addNewTask(task1);
         final int taskId2 = inMemoryTaskManager.addNewTask(task2);
         Epic epic1 = new Epic("model.Epic #1", "Epic1 description", Instant.now().minusSeconds(190000),3);
-        Epic epic2 = new Epic("model.Epic #2", "Epic2 description", Instant.now().minusSeconds(290000), 4);
+        Epic epic2 = new Epic("model.Epic #2", "Epic2 description", Instant.now().plusSeconds(290000), 4);
         final int epicId1 = inMemoryTaskManager.addNewEpic(epic1);
         final int epicId2 = inMemoryTaskManager.addNewEpic(epic2);
         SubTask subtask1 = new SubTask("Subtask #1-1", "Subtask1 description", Status.NEW, epicId1, Instant.now().minusSeconds(390000), 1);
         SubTask subtask2 = new SubTask("Subtask #2-1", "Subtask1 description", Status.NEW, epicId1, Instant.now().minusSeconds(490000), 1);
-        SubTask subtask3 = new SubTask("Subtask #3-2", "Subtask1 description", Status.NEW, epicId2, Instant.now().minusSeconds(590000), 1);
+        SubTask subtask3 = new SubTask("Subtask #3-2", "Subtask1 description", Status.NEW, epicId2, Instant.now().plusSeconds(590000), 1);
         final int subtaskId1 = inMemoryTaskManager.addNewSubTask(subtask1);
         final int subtaskId2 = inMemoryTaskManager.addNewSubTask(subtask2);
         final int subtaskId3 = inMemoryTaskManager.addNewSubTask(subtask3);

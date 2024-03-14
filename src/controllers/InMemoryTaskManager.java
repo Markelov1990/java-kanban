@@ -142,20 +142,22 @@ public class InMemoryTaskManager implements TaskManager {
         }
 
         List<SubTask> subtasks = epic.getListOfSubtasks();
-        Instant startTime = subtasks.get(0).getStartTime();
-        Instant endTime = subtasks.get(0).getEndTime();
+        if (!subtasks.isEmpty()) {
+            Instant startTime = subtasks.get(0).getStartTime();
+            Instant endTime = subtasks.get(0).getEndTime();
 
-        for (SubTask subtask : subtasks) {
-            if (subtask.getStartTime().isBefore(startTime)) {
-                startTime = subtask.getStartTime();
-            } else if (subtask.getEndTime().isAfter(endTime)) {
-                endTime = subtask.getEndTime();
+            for (SubTask subtask : subtasks) {
+                if (subtask.getStartTime().isBefore(startTime)) {
+                    startTime = subtask.getStartTime();
+                } else if (subtask.getEndTime().isAfter(endTime)) {
+                    endTime = subtask.getEndTime();
+                }
             }
+            epic.setStartTime(startTime);
+            epic.setEndTime(endTime);
+            long duration = (endTime.toEpochMilli() - startTime.toEpochMilli());
+            epic.setDuration(duration);
         }
-        epic.setStartTime(startTime);
-        epic.setEndTime(endTime);
-        long duration = (endTime.toEpochMilli() - startTime.toEpochMilli());
-        epic.setDuration(duration);
 
     }
 
