@@ -41,6 +41,9 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         this.tasks = tasks;
         this.epics = epics;
         this.subtasks = subtasks;
+        this.prioritizedTasks.addAll(tasks.values());
+        this.prioritizedTasks.addAll(epics.values());
+        this.prioritizedTasks.addAll(subtasks.values());
 
     }
 

@@ -2,10 +2,10 @@ package controllers;
 
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
+import exceptions.ManagerValidateException;
 import model.Status;
 import model.Task;
 import model.SubTask;
@@ -18,7 +18,7 @@ public class InMemoryTaskManager implements TaskManager {
     protected HashMap<Integer, Epic> epics = new HashMap<>();
     protected HashMap<Integer, SubTask> subtasks = new HashMap<>();
     protected HistoryManager historyManager = Managers.getDefaultHistory();
-
+    protected Set<Task> prioritizedTasks = new TreeSet<>(Comparator.comparing(Task::getStartTime));
     private int identificator = 0;
 
     public InMemoryTaskManager(HistoryManager historyManager) {
@@ -34,6 +34,7 @@ public class InMemoryTaskManager implements TaskManager {
         identificator++;
         task.setId(identificator);
         tasks.put(identificator, task);
+        addNewPrioritizedTask(task);
         return identificator;
 
 
@@ -43,6 +44,7 @@ public class InMemoryTaskManager implements TaskManager {
         identificator++;
         epic.setId(identificator);
         epics.put(identificator, epic);
+        addNewPrioritizedTask(epic);
         return identificator;
 
 
@@ -54,6 +56,7 @@ public class InMemoryTaskManager implements TaskManager {
         subtasks.put(identificator, subtask);
         epics.get(subtask.getIdOfEpic()).getListOfSubtasks().add(subtask);
         updateEpic(epics.get(subtask.getIdOfEpic()));
+        addNewPrioritizedTask(subtask);
         return identificator;
 
     }
@@ -187,6 +190,32 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public List<Task> getHistory() {
         return historyManager.getHistory();
+    }
+
+    private void addNewPrioritizedTask(Task task) {
+        prioritizedTasks.add(task);
+        taskPriority();
+    }
+
+    private void taskPriority() {
+        List<Task> tasks = getPrioritizedTasks();
+
+        for (int i = 1; i < tasks.size(); i++) {
+            Task task = tasks.get(i);
+
+            if (task.getStartTime().isBefore(tasks.get(i - 1).getEndTime())) {
+                throw new ManagerValidateException("Задачи: " + task.getId() + " и " + tasks.get(i - 1) + " пересекаются!");
+            }
+        }
+    }
+
+    private List<Task> getPrioritizedTasks() {
+
+        return new ArrayList<>(prioritizedTasks);
+         //return prioritizedTasks.stream().collect(Collectors.toList());
+        // Даже если я хочу использовать здесь поток, среда програмирования мне советует приведение, но я не понимаю почему. Почему это лучше?
+
+
     }
 
 }
