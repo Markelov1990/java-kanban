@@ -187,12 +187,12 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
             bufferedWriter.write("id,type,name,status,detail, startTime, duration, epic");
             for (Task task : tasks.values()) {
-                String stringTask = String.format("%s,%s,%s,%s,%s,%s,%s,%s", task.getId(), "TASK", task.getName(), task.getStatus(), task.getDetail(), task.getStartTime(), task.getDuration());
+                String stringTask = String.format("%s,%s,%s,%s,%s,%s,%s", task.getId(), "TASK", task.getName(), task.getStatus(), task.getDetail(), task.getStartTime(), task.getDuration());
                 bufferedWriter.newLine();
                 bufferedWriter.write(stringTask);
             }
             for (Epic epic : epics.values()) {
-                String stringEpic = String.format("%s,%s,%s,%s,%s,%s,%s,%s", epic.getId(), "EPIC", epic.getName(), epic.getStatus(), epic.getDetail(), epic.getStartTime(), epic.getDuration());
+                String stringEpic = String.format("%s,%s,%s,%s,%s,%s,%s", epic.getId(), "EPIC", epic.getName(), epic.getStatus(), epic.getDetail(), epic.getStartTime(), epic.getDuration());
                 bufferedWriter.newLine();
                 bufferedWriter.write(stringEpic);
             }

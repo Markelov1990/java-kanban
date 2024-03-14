@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class Epic extends Task {
 
-    private ArrayList<Object> listOfSubtasks = new ArrayList<>();
-    private Instant endTime = Instant.ofEpochMilli(0);
+    private final ArrayList<Object> listOfSubtasks = new ArrayList<>();
+    private final Instant endTime;
 
     public Epic(String name, String detail, Instant startTime, long duration) {
         super(name,
@@ -23,6 +23,8 @@ public class Epic extends Task {
         listOfSubtasks.clear();
     }
 
+
+
     @Override
     public Instant getEndTime() {
         return endTime;
@@ -30,10 +32,9 @@ public class Epic extends Task {
 
     @Override
     public String toString() {
-        String result = "Эпик: " + name + ", Подробности: " + detail + ", Номер задачи: " + id + ", Статус " + status  + ", Начало задачи: " + startTime.toEpochMilli() + " Длительность задачи: " + duration + " .\n"
-                + "Подзадачи: \n" + listOfSubtasks;;
+        return "Эпик: " + name + ", Подробности: " + detail + ", Номер задачи: " + id + ", Статус " + status  + ", Начало задачи: " + startTime.toEpochMilli() + " Длительность задачи: " + duration + " .\n"
+                + "Подзадачи: \n" + listOfSubtasks;
 
-        return result;
     }
 
 }

@@ -1,6 +1,7 @@
 package controllers;
 
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -113,6 +114,12 @@ public class InMemoryTaskManager implements TaskManager {
         Status status3 = Status.NEW;
         int count = epic.getListOfSubtasks().size();
 
+        SubTask a = (SubTask) epic.getListOfSubtasks().get(0);
+
+        Instant startTime = a.getStartTime();
+        Instant endTime = a.getEndTime();
+
+
         int countOfDone = 0;
         int countOfInprogress = 0;
         for (int i = 0; i < count; i++) {
@@ -122,6 +129,8 @@ public class InMemoryTaskManager implements TaskManager {
             } else if (t.getStatus().equals(status2)) {
                 countOfInprogress++;
             }
+            if (t.getStartTime().isBefore(startTime)) startTime = t.getStartTime();
+            if (t.getEndTime().isAfter(endTime)) endTime = t.getEndTime();
 
         }
 

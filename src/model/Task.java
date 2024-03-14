@@ -81,9 +81,8 @@ public class Task {
 
     @Override
     public String toString() {
-        String result = "Задача: " + name + ", Подробности: " + detail + ", Номер задачи: " + id + ", Статус " + status  + ", Начало задачи: " + startTime.toEpochMilli() + " Длительность задачи: " + duration +   ".\n";
+        return "Задача: " + name + ", Подробности: " + detail + ", Номер задачи: " + id + ", Статус " + status  + ", Начало задачи: " + startTime.toEpochMilli() + " Длительность задачи: " + duration +   ".\n";
 
-        return result;
     }
 
 

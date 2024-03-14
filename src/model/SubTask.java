@@ -4,7 +4,7 @@ import java.time.Instant;
 
 public class SubTask extends Task {
 
-    private int idOfEpic;
+    private final int idOfEpic;
 
 
     public SubTask(String name, String detail, Status status, int idOfEpic, Instant startTime, long duration) {
@@ -22,10 +22,12 @@ public class SubTask extends Task {
 
 
 
+
+
+
     @Override
     public String toString() {
-        String result = "Подзадача: " + name + ", Подробности: " + detail + ", Номер основной задачи: " + idOfEpic +" Номер подзадачи: " +  id +  ", Статус " + status  + ", Начало задачи: " + startTime.toEpochMilli() + " Длительность задачи: " + duration + " .\n";
+        return "Подзадача: " + name + ", Подробности: " + detail + ", Номер основной задачи: " + idOfEpic +" Номер подзадачи: " +  id +  ", Статус " + status  + ", Начало задачи: " + startTime.toEpochMilli() + " Длительность задачи: " + duration + " .\n";
 
-        return result;
     }
 }

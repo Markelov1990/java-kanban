@@ -1,4 +1,4 @@
-import controllers.InMemoryTaskManager;
+
 import controllers.Managers;
 import controllers.TaskManager;
 import model.Status;
@@ -24,9 +24,9 @@ public class Main {
         SubTask subtask1 = new SubTask("Subtask #1-1", "Subtask1 description", Status.NEW, epicId1, Instant.now(), 15);
         SubTask subtask2 = new SubTask("Subtask #2-1", "Subtask1 description", Status.NEW, epicId1, Instant.now(), 15);
         SubTask subtask3 = new SubTask("Subtask #3-2", "Subtask1 description", Status.NEW, epicId2, Instant.now(), 15);
-        final Integer subtaskId1 = inMemoryTaskManager.addNewSubTask(subtask1);
-        final Integer subtaskId2 = inMemoryTaskManager.addNewSubTask(subtask2);
-        final Integer subtaskId3 = inMemoryTaskManager.addNewSubTask(subtask3);
+        final int subtaskId1 = inMemoryTaskManager.addNewSubTask(subtask1);
+        final int subtaskId2 = inMemoryTaskManager.addNewSubTask(subtask2);
+        final int subtaskId3 = inMemoryTaskManager.addNewSubTask(subtask3);
         printAllTasks(inMemoryTaskManager);
         // Обновление
 
