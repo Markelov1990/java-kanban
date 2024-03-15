@@ -3,8 +3,6 @@ package controllers;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import model.Status;
 import model.Task;
 import model.SubTask;
 import model.Epic;

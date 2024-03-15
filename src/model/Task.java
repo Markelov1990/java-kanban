@@ -1,23 +1,31 @@
 package model;
 
+import java.time.Instant;
+
 public class Task {
 
     protected String name;
     protected String detail;
     protected int id;
     protected Status status;
+    protected Instant startTime;
+    protected long duration;
 
-    public Task(String name, String detail, Status status) {
+    public Task(String name, String detail, Status status, Instant startTime, long duration) {
         this.name = name;
         this.detail = detail;
         this.status = status;
+        this.startTime = startTime;
+        this.duration = duration;
 
 
     }
 
-    public Task(String name, String detail) {
+    public Task(String name, String detail, Instant startTime, long duration) {
         this.name = name;
         this.detail = detail;
+        this.startTime = startTime;
+        this.duration = duration;
     }
 
     public void setId(int id) {
@@ -30,6 +38,26 @@ public class Task {
 
     public String getDetail() {
         return detail;
+    }
+
+    public Instant getStartTime() {
+        return startTime;
+    }
+
+    public long getDuration() {
+        return duration;
+    }
+    public Instant getEndTime() {
+
+        return startTime.plusSeconds(duration * 60);
+    }
+
+    public void setStartTime(Instant startTime) {
+        this.startTime = startTime;
+    }
+
+    public void setDuration(long duration) {
+        this.duration = duration;
     }
 
     public int getId() {
@@ -61,9 +89,8 @@ public class Task {
 
     @Override
     public String toString() {
-        String result = "Задача: " + name + ", Подробности: " + detail + ", Номер задачи: " + id + ", Статус " + status  +" .\n";
+        return "Задача: " + name + ", Подробности: " + detail + ", Номер задачи: " + id + ", Статус " + status  + ", Начало задачи: " + startTime.toEpochMilli() + " Длительность задачи: " + duration +   ".\n";
 
-        return result;
     }
 
 
