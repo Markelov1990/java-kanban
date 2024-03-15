@@ -252,9 +252,6 @@ public class InMemoryTaskManager implements TaskManager {
     private List<Task> getPrioritizedTasks() {
 
         return new ArrayList<>(prioritizedTasks);
-         //return prioritizedTasks.stream().collect(Collectors.toList());
-        // Даже если я хочу использовать здесь поток, среда програмирования мне советует приведение, но я не понимаю почему. Почему это лучше?
-
 
     }
 
